@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomNodeLineView">
+        <!-- 顶部节点外环半径 -->
+        <attr name="topNodeOutSideRadius" format="dimension"></attr>
+        <!-- 顶部节点内环半径 -->
+        <attr name="topNodeInSideRadius" format="dimension"></attr>
+        <!-- 其他节点半径 -->
+        <attr name="otherNodeRadius" format="dimension"></attr>
+        <!-- 节点（半径外）之间的距离 -->
+        <attr name="nodeRadiusDistance" format="dimension"></attr>
+        <!-- 顶部节点颜色 -->
+        <attr name="topNodeColor" format="color"></attr>
+        <!-- 其他节点颜色 -->
+        <attr name="otherNodeColor" format="color"></attr>
+        <!-- item顶部内边距边距 -->
+        <attr name="itemPaddingTop" format="dimension"></attr>
+        <!-- 节点个数 -->
+        <attr name="nodeCount" format="integer"></attr>
+        <!-- View的宽度 -->
+        <attr name="viewWidth" format="dimension"></attr>
+        
+    </declare-styleable>
+
+</resources>
