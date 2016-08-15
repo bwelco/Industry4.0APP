@@ -7,18 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.Bean.OrderListBean;
-import com.adapter.OrderListAdapter;
+import com.fragments.DealingListFragment;
+import com.fragments.OverListFragment;
 import com.google.gson.reflect.TypeToken;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.RequestParams;
@@ -48,9 +43,11 @@ public class OrderListActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private static OrderListBean orderList;
-    private static ArrayList<OrderListBean.OrderInfoBean> dealingList;
-    private static ArrayList<OrderListBean.OrderInfoBean> overList;
+    public static OrderListBean orderList;
+    public static ArrayList<OrderListBean.OrderInfoBean> dealingList;
+    public static ArrayList<OrderListBean.OrderInfoBean> overList;
+    public DealingListFragment dealingListFragment;
+    public OverListFragment overListFragment;
 
 
     /**
@@ -76,6 +73,9 @@ public class OrderListActivity extends AppCompatActivity {
 
         RequestParams params = new RequestParams();
         JSONObject object = new JSONObject();
+
+        dealingListFragment = new DealingListFragment();
+        overListFragment = new OverListFragment();
 
         try {
             object.put("UserID", ConfigUtil.userID);
@@ -132,134 +132,6 @@ public class OrderListActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-        private static SwipeRefreshLayout refresh;
-        private static OrderListAdapter adapter;
-
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_order_list, container, false);
-            ListView listView = (ListView) rootView.findViewById(R.id.orderListView);
-            TextView textView = (TextView) rootView.findViewById(R.id.noItem);
-            refresh = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh);
-            refresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
-                    android.R.color.holo_orange_light, android.R.color.holo_green_light);
-
-            /* 取消右侧滑动条 */
-
-            listView.setVerticalScrollBarEnabled(false);
-            listView.setEmptyView(textView);
-
-            Log.i("admin", dealingList.size() + "  " + overList.size());
-            if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
-                /* 生产中 */
-
-                adapter = new OrderListAdapter(getContext(),
-                        R.layout.item_order_list, dealingList);
-                listView.setAdapter(adapter);
-                textView.setText("无生产中订单");
-
-            } else {
-                adapter = new OrderListAdapter(getContext(),
-                        R.layout.item_order_list, overList);
-                listView.setAdapter(adapter);
-
-                textView.setText("无历史订单");
-
-            }
-
-            refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    refreshList();
-                    adapter.notifyDataSetChanged();
-                }
-            });
-
-
-            return rootView;
-        }
-
-        public void refreshList() {
-            RequestParams params = new RequestParams();
-            JSONObject object = new JSONObject();
-
-            try {
-                object.put("UserID", ConfigUtil.userID);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            params.addBodyParameter("userid", object.toString());
-            MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
-                    ConfigUtil.URL + "Gy4-new-2/AppGetAllOrderInfo.jsp", params, new RequestCallBack<String>() {
-                        @Override
-                        public void onSuccess(ResponseInfo<String> responseInfo) {
-
-                            if (refresh.isRefreshing()) {
-                                refresh.setRefreshing(false);
-                            }
-
-                            Log.i("admin", responseInfo.result);
-
-                            Type type = new TypeToken<OrderListBean>() {
-                            }.getType();
-
-                            orderList = (OrderListBean) GsonUtil.getInstance().fromJson(responseInfo.result, type);
-
-                            dealingList = new ArrayList<OrderListBean.OrderInfoBean>();
-                            overList = new ArrayList<OrderListBean.OrderInfoBean>();
-
-                            for (OrderListBean.OrderInfoBean bean : orderList.getOrderInfo()) {
-                                if (bean.getOrderStateCode().equals("-1") || bean.getOrderStateCode().equals("0")) {
-                                /* 还没开始生产 */
-                                    dealingList.add(bean);
-
-                                } else if (bean.getOrderStateCode().equals("1")) {
-                                /* 生产结束 */
-                                    overList.add(bean);
-                                }
-                            }
-
-
-                        }
-
-                        @Override
-                        public void onFailure(HttpException e, String s) {
-                            Log.i("admin", "failcode = " + s);
-                            if (refresh.isRefreshing()) {
-                                refresh.setRefreshing(false);
-                            }
-                            ToastUtil.toast("请求失败。errCode：" + s);
-                        }
-                    });
-        }
-    }
 
 
     /**
@@ -276,7 +148,13 @@ public class OrderListActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            if (position == 0) {
+                return dealingListFragment;
+            } else if (position == 1) {
+                return overListFragment;
+            }
+
+            return null;
         }
 
         @Override

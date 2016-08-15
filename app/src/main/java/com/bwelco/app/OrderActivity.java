@@ -290,13 +290,22 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                     e.printStackTrace();
                 }
 
+                dialog.setMessage("正在创建订单...");
+                dialog.show();
                 params.addBodyParameter("param", object.toString());
                 MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
                         ConfigUtil.URL + "Gy4-new-2/AppAddOrder.jsp", params, new RequestCallBack<String>() {
                             @Override
                             public void onSuccess(ResponseInfo<String> responseInfo) {
                                 Log.i("admin", responseInfo.result);
+                                /* 睡眠一会。等插入好之后再去调用。 */
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                                 ToastUtil.toast("下单成功！");
+                                dialog.dismiss();
 
                                 Intent intent = new Intent(OrderActivity.this, OrderListActivity.class);
                                 startActivity(intent);
@@ -306,6 +315,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                             @Override
                             public void onFailure(HttpException e, String s) {
                                 Log.i("admin","fail = " + s);
+                                dialog.dismiss();
                                 ToastUtil.toast("下单失败！请检查网络设置 errCode:" + s);
                             }
                         });
