@@ -88,9 +88,17 @@
         <activity
             android:name=".RoutePlanActivity"
             android:theme="@style/Dialog" />
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".SettingActivity"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+        <activity
+            android:name=".RegisterActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+        <activity android:name=".SettingActivity" />
+        <activity
+            android:name=".OrderListActivity"
+            android:label="订单查询"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

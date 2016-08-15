@@ -11,9 +11,9 @@ import com.bwelco.app.MyApp;
 public class ConfigUtil {
     public static String URL =  "http://10.0.46.222:8080/";
 
-    public static String userID = null;
+    public static String userID = "1";
 
-    public static String nickName = null;
+    public static String nickName = "null";
 
     public static String getURL(){
         String ret = null;

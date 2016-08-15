@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             case R.id.query:{
-                Intent intent = new Intent(MainActivity.this, QueryActivity.class);
+                Intent intent = new Intent(MainActivity.this, OrderListActivity.class);
                 startActivity(intent);
                 break;
             }

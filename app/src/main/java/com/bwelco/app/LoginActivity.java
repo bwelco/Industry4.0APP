@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -69,21 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.bt_go:
-//                Explode explode = null;
-//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-//                    explode = new Explode();
-//                    explode.setDuration(500);
-//
-//                    getWindow().setExitTransition(explode);
-//                    getWindow().setEnterTransition(explode);
-//                }
-//
-//                ActivityOptionsCompat oc2 = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
-//                Intent i2 = new Intent(this,MainActivity.class);
-//                startActivity(i2, oc2.toBundle());
-
-
-
+                final Explode[] explode = {null};
 
                 RequestParams params = new RequestParams();
                 //params.setBodyEntity(b);
@@ -108,6 +96,21 @@ public class LoginActivity extends AppCompatActivity {
                                         ToastUtil.toast("登录失败！请检查用户名密码");
                                     } else {
                                         ToastUtil.toast("登录成功！");
+                                        ConfigUtil.userID = userID;
+                                        ConfigUtil.nickName = nickName;
+
+                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                                            explode[0] = new Explode();
+                                            explode[0].setDuration(500);
+
+                                            getWindow().setExitTransition(explode[0]);
+                                            getWindow().setEnterTransition(explode[0]);
+                                        }
+
+                                        ActivityOptionsCompat oc2 =
+                                                ActivityOptionsCompat.makeSceneTransitionAnimation(LoginActivity.this);
+                                        Intent i2 = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(i2, oc2.toBundle());
                                     }
 
                                 } catch (JSONException e) {
