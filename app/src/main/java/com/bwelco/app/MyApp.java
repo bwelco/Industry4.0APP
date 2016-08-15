@@ -15,10 +15,13 @@ import com.baidu.mapapi.SDKInitializer;
  */
 public class MyApp extends Application {
 
+    public static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
         ToastMgr.builder.init(getApplicationContext());
+        context = getApplicationContext();
+
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
     }

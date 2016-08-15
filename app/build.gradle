@@ -4,6 +4,9 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
+    useLibrary 'org.apache.http.legacy'
+
+
     defaultConfig {
         applicationId "com.bwelco.app"
         minSdkVersion 17
@@ -23,6 +26,12 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    repositories {
+        flatDir {
+            dirs 'libs' //this way we can find the .aar file in libs folder
+        }
+    }
 }
 
 dependencies {
@@ -34,4 +43,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:cardview-v7:23.0.0'
+    /* xutils2 aar库 */
+    compile(name: 'library-release', ext: 'aar')
 }

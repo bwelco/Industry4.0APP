@@ -47,6 +47,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <EditText
+                            android:focusable="false"
                             android:textSize="13sp"
                             android:hint="用户名"
                             android:textColor="#f0f7f4"
@@ -72,6 +73,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <EditText
+                            android:focusable="false"
                             android:textSize="13sp"
                             android:hint="密码"
                             android:textColor="#f0f7f4"
@@ -97,6 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <EditText
+                            android:focusable="false"
                             android:textSize="13sp"
                             android:textColor="#f0f7f4"
                             android:hint="重复密码"

@@ -63,7 +63,13 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="y9TjzWX6YCW5qy2C0z53Pp1TaErojVlV" />
 
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".QueryActivity" />
         <activity android:name=".OrderActivity" />
 
@@ -82,16 +88,9 @@
         <activity
             android:name=".RoutePlanActivity"
             android:theme="@style/Dialog" />
-        <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".RegisterActivity">
-
-        </activity>
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>
