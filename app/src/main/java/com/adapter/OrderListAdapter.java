@@ -48,6 +48,12 @@ public class OrderListAdapter extends ArrayAdapter<OrderListBean.OrderInfoBean> 
         holder.creatTime.setText("创建时间：" + list.get(position).getCreateTime());
         holder.orderState.setText(list.get(position).getOrderState());
 
+        if (list.get(position).getDescription() != "") {
+            holder.description.setText("备注：" + list.get(position).getDescription());
+        } else {
+            holder.description.setText("备注：无");
+        }
+
         return convertView;
     }
 
@@ -65,6 +71,8 @@ public class OrderListAdapter extends ArrayAdapter<OrderListBean.OrderInfoBean> 
         TextView num;
         @InjectView(R.id.orderState)
         TextView orderState;
+        @InjectView(R.id.description)
+        TextView description;
 
         ViewHolder(View view) {
             ButterKnife.inject(this, view);

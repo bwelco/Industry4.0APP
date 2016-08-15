@@ -94,6 +94,15 @@
                     android:text="数量：10"
                     android:textSize="15sp" />
 
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/num"
+                    android:layout_marginTop="10dp"
+                    android:text="备注：无"
+                    android:textSize="15sp" />
+
             </RelativeLayout>
 
 

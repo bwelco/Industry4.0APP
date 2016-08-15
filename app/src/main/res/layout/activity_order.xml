@@ -287,8 +287,9 @@
         android:id="@+id/beizhu"
         android:padding="5dp"
         android:layout_marginTop="10dp"
-        android:background="#FFFFFF"
+        android:background="#F9F9F9"
         android:hint="备注"
+        android:textColorHint="@color/hintColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

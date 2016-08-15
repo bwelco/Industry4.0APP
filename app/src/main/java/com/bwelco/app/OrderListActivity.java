@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -103,7 +104,7 @@ public class OrderListActivity extends AppCompatActivity {
                                 /* 还没开始生产 */
                                 dealingList.add(bean);
 
-                            } else if(bean.getOrderStateCode().equals("1")){
+                            } else if (bean.getOrderStateCode().equals("1")) {
                                 /* 生产结束 */
                                 overList.add(bean);
                             }
@@ -140,6 +141,9 @@ public class OrderListActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private static SwipeRefreshLayout refresh;
+        private static OrderListAdapter adapter;
+
 
         public PlaceholderFragment() {
         }
@@ -162,27 +166,101 @@ public class OrderListActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_order_list, container, false);
             ListView listView = (ListView) rootView.findViewById(R.id.orderListView);
             TextView textView = (TextView) rootView.findViewById(R.id.noItem);
+            refresh = (SwipeRefreshLayout) rootView.findViewById(R.id.refresh);
+            refresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                    android.R.color.holo_orange_light, android.R.color.holo_green_light);
+
             /* 取消右侧滑动条 */
+
             listView.setVerticalScrollBarEnabled(false);
             listView.setEmptyView(textView);
 
             Log.i("admin", dealingList.size() + "  " + overList.size());
             if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
                 /* 生产中 */
-                listView.setAdapter(new OrderListAdapter(getContext(),
-                        R.layout.item_order_list, dealingList));
+
+                adapter = new OrderListAdapter(getContext(),
+                        R.layout.item_order_list, dealingList);
+                listView.setAdapter(adapter);
                 textView.setText("无生产中订单");
 
             } else {
-                listView.setAdapter(new OrderListAdapter(getContext(),
-                        R.layout.item_order_list, overList));
+                adapter = new OrderListAdapter(getContext(),
+                        R.layout.item_order_list, overList);
+                listView.setAdapter(adapter);
+
                 textView.setText("无历史订单");
 
             }
 
+            refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    refreshList();
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+
             return rootView;
         }
+
+        public void refreshList() {
+            RequestParams params = new RequestParams();
+            JSONObject object = new JSONObject();
+
+            try {
+                object.put("UserID", ConfigUtil.userID);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            params.addBodyParameter("userid", object.toString());
+            MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
+                    ConfigUtil.URL + "Gy4-new-2/AppGetAllOrderInfo.jsp", params, new RequestCallBack<String>() {
+                        @Override
+                        public void onSuccess(ResponseInfo<String> responseInfo) {
+
+                            if (refresh.isRefreshing()) {
+                                refresh.setRefreshing(false);
+                            }
+
+                            Log.i("admin", responseInfo.result);
+
+                            Type type = new TypeToken<OrderListBean>() {
+                            }.getType();
+
+                            orderList = (OrderListBean) GsonUtil.getInstance().fromJson(responseInfo.result, type);
+
+                            dealingList = new ArrayList<OrderListBean.OrderInfoBean>();
+                            overList = new ArrayList<OrderListBean.OrderInfoBean>();
+
+                            for (OrderListBean.OrderInfoBean bean : orderList.getOrderInfo()) {
+                                if (bean.getOrderStateCode().equals("-1") || bean.getOrderStateCode().equals("0")) {
+                                /* 还没开始生产 */
+                                    dealingList.add(bean);
+
+                                } else if (bean.getOrderStateCode().equals("1")) {
+                                /* 生产结束 */
+                                    overList.add(bean);
+                                }
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onFailure(HttpException e, String s) {
+                            Log.i("admin", "failcode = " + s);
+                            if (refresh.isRefreshing()) {
+                                refresh.setRefreshing(false);
+                            }
+                            ToastUtil.toast("请求失败。errCode：" + s);
+                        }
+                    });
+        }
     }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
