@@ -26,6 +26,7 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -82,8 +83,6 @@ public class RoutePlanActivity extends Activity {
 
     private double longitude, latitude;
 
-    boolean isLoacted = true;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,14 +90,8 @@ public class RoutePlanActivity extends Activity {
         setContentView(R.layout.activity_routeplan);
         Bundle bundle = this.getIntent().getExtras();
 
-        isLoacted = bundle.getBoolean("location"); //是经纬度还是城市名
-
         city = bundle.getString("city");
         address = bundle.getString("address");
-
-        //经纬度
-        longitude = bundle.getDouble("longitude");
-        latitude = bundle.getDouble("latitude");
 
         init();
 
@@ -270,10 +263,10 @@ public class RoutePlanActivity extends Activity {
             bdMap.clear();
             if (drivingRouteResult == null
                     || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
-//                Toast.makeText(RoutePlanActivity.this, "没有查找到该地点！",
-//                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(RoutePlanActivity.this, "没有查找到该地点！",
+                        Toast.LENGTH_SHORT).show();
 
-                drivingCitySearch();
+//                drivingCitySearch();
             }
             if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
                 // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
@@ -317,19 +310,16 @@ public class RoutePlanActivity extends Activity {
 //            drivingOption.policy(DrivingPolicy.values()[drivingSpinner
 //                    .getSelectedItemPosition()]);// 设置驾车路线策略
         drivingOption.policy(DrivingPolicy.values()[1]);// 设置驾车路线策略
-        drivingOption.from(PlanNode.withCityNameAndPlaceName("南京", "南京工程学院(江宁校区)-4号门"));// 设置起点
-        //drivingOption.to(PlanNode.withCityNameAndPlaceName("南京", endPlace));// 设置终点
-//        drivingOption.to(PlanNode.withCityNameAndPlaceName(city, address));
-        //drivingOption.to(PlanNode.withCityNameAndPlaceName("南京", address));
-        if(isLoacted)
-        {
-            drivingOption.to(PlanNode.withLocation(new LatLng(latitude, longitude))); //经纬度
+        drivingOption.from(PlanNode.withCityNameAndPlaceName("杭州", "市政府"));// 设置起点
+
+        if(city.equals("南京")){
+            drivingOption.to(PlanNode.withCityNameAndPlaceName(city, "南京工程学院(江宁校区)-4号门 "));
+            Toast.makeText(RoutePlanActivity.this,
+                        "南京", 1000).show();
+        }else{
+            drivingOption.to(PlanNode.withCityNameAndPlaceName(city, "市政府"));
         }
-        else
-        {
-            //Toast.makeText(RoutePlanActivity.this, ""+city+" "+address, Toast.LENGTH_SHORT).show();
-            drivingOption.to(PlanNode.withCityNameAndPlaceName(city, address));
-        }
+
         routePlanSearch.drivingSearch(drivingOption);// 发起驾车路线规划
     }
 
@@ -337,9 +327,10 @@ public class RoutePlanActivity extends Activity {
         DrivingRoutePlanOption drivingOption = new DrivingRoutePlanOption();
 
         drivingOption.policy(DrivingPolicy.values()[1]);// 设置驾车路线策略
-        drivingOption.from(PlanNode.withCityNameAndPlaceName("南京", "南京工程学院(江宁校区)-4号门"));// 设置起点
+        drivingOption.from(PlanNode.withCityNameAndPlaceName("杭州", "杭州市环城东路1号城站广场"));// 设置起点
         drivingOption.to(PlanNode.withCityNameAndPlaceName(city, "市政府"));
 
+        Log.i("RouteActivity", city);
         routePlanSearch.drivingSearch(drivingOption);// 发起驾车路线规划
     }
 

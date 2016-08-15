@@ -167,7 +167,7 @@
                 android:src="@drawable/location" />
 
             <TextView
-                android:id="@+id/startLocation"
+                android:id="@+id/stopLocation"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -175,7 +175,7 @@
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
-                android:text="选择发货地"
+                android:text="选择收货地"
                 android:textColorHint="@color/hintColor"
                 android:textSize="16sp" />
 

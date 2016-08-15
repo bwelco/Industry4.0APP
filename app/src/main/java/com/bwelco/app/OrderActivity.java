@@ -56,7 +56,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     ProgressDialog dialog;
     CityPop pop;
     EditText goodnum;
-    TextView startLocation;
+    TextView stopLocation;
 
     String mAddress = null;
 
@@ -114,7 +114,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         goodType = (TextView) this.findViewById(R.id.goodType);
         goodnum = (EditText) this.findViewById(R.id.goodnum);
         dialog = new ProgressDialog(this);
-        startLocation = (TextView) this.findViewById(R.id.startLocation);
+        stopLocation = (TextView) this.findViewById(R.id.stopLocation);
         beizhu = (EditText) this.findViewById(R.id.beizhu);
 
 //        address.addTextChangedListener(new TextWatcher() {
@@ -162,8 +162,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                     return;
                 }
 
-                if (startLocation.getText().toString().equals("选择发货地")) {
-                    ToastUtil.toast("没有选择发货地！");
+                if (stopLocation.getText().toString().equals("选择收货地")) {
+                    ToastUtil.toast("没有选择收货地！");
                     return;
                 }
 
@@ -201,6 +201,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 //城市和地址
                 bundle.putBoolean("location", isLocated);//是经纬度还是城市名
 
+                cityStr = stopLocation.getText().toString().substring(4);
                 bundle.putString("city", cityStr);
                 bundle.putString("address", addressStr);
 
@@ -219,7 +220,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 //        getAddress.setOnClickListener(this);
 //        city.setOnClickListener(this);
         goodType.setOnClickListener(this);
-        startLocation.setOnClickListener(this);
+        stopLocation.setOnClickListener(this);
 
         name.setText(ConfigUtil.nickName);
         number.setText(ConfigUtil.phoneNum);
@@ -273,8 +274,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
                     String selectLocationID = null;
                     for (OrderBean.LocationBean b : bean.getLocation()) {
-                        Log.i("admin", startLocation.getText().toString().substring("发货地：".length()));
-                        if (b.getLocation().equals(startLocation.getText().toString().substring("发货地：".length()))) {
+                        Log.i("admin", stopLocation.getText().toString().substring("收货地：".length()));
+                        if (b.getLocation().equals(stopLocation.getText().toString().substring("收货地：".length()))) {
                             selectLocationID = b.getID();
                             break;
                         }
@@ -366,7 +367,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 break;
             }
 
-            case R.id.startLocation:{
+            case R.id.stopLocation:{
                 List<OrderBean.LocationBean> locationBeen = bean.getLocation();
                 CharSequence[] charSequences = new CharSequence[locationBeen.size()];
 
@@ -374,7 +375,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                     charSequences[i] = locationBeen.get(i).getLocation();
                 }
 
-                showDialog(charSequences, "发货地：");
+                showDialog(charSequences, "收货地：");
                 break;
             }
         }
@@ -391,8 +392,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
             public void onClick(DialogInterface dialog, int which) {
                 if (prefix.equals("货物类型："))
                     OrderActivity.this.goodType.setText(prefix + charSequences[which]);
-                if (prefix.equals("发货地："))
-                    OrderActivity.this.startLocation.setText(prefix + charSequences[which]);
+                if (prefix.equals("收货地："))
+                    OrderActivity.this.stopLocation.setText(prefix + charSequences[which]);
             }
         }).show();
     }
