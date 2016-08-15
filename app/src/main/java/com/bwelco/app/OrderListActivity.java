@@ -1,6 +1,7 @@
 package com.bwelco.app;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -65,6 +66,13 @@ public class OrderListActivity extends AppCompatActivity {
         toolbar.setTitle("订单查询");
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+
+        if (ConfigUtil.nickName.equals("-1")) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            this.finish();
+        }
+
 
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("订单查询中");

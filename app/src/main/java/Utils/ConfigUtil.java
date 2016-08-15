@@ -14,15 +14,18 @@ public class ConfigUtil {
 
     public static String phoneNum = "18115162181";
 
-    public static String userID = "1";
+    public static String userID = "3";
 
-    public static String nickName = "nickname";
+    public static String nickName = "-1";
 
     public static String getURL() {
         String ret = null;
         SharedPreferences sp =
                 MyApp.context.getSharedPreferences("ipset", Activity.MODE_PRIVATE);
-        ret = sp.getString("url", null);
+
+
+
+         ret  = "http://" + sp.getString("url", null) + ":8080/";
 
         return ret;
     }

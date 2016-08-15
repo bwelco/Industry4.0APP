@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import Utils.ConfigUtil;
 import Utils.ToastUtil;
 
 public class SettingActivity extends AppCompatActivity
@@ -43,6 +44,8 @@ implements View.OnClickListener{
             SharedPreferences.Editor editor = sp.edit();
 
             editor.putString("url", editText.getText().toString());
+
+            ConfigUtil.URL = "http://" + editText.getText().toString() + ":8080/";
 
             editor.commit();
 

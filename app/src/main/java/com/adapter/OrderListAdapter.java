@@ -48,7 +48,7 @@ public class OrderListAdapter extends ArrayAdapter<OrderListBean.OrderInfoBean> 
         holder.creatTime.setText("创建时间：" + list.get(position).getCreateTime());
         holder.orderState.setText(list.get(position).getOrderState());
 
-        if (list.get(position).getDescription() != "") {
+        if (list.get(position).getDescription() != "" && list.get(position).getDescription() != null) {
             holder.description.setText("备注：" + list.get(position).getDescription());
         } else {
             holder.description.setText("备注：无");

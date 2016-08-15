@@ -51,11 +51,12 @@
                     android:src="@drawable/background" />
 
                 <TextView
+                    android:id="@+id/progress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:text="%80"
+                    android:text="80%"
                     android:textColor="#ffffff"
                     android:textSize="30sp" />
 
@@ -71,6 +72,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/makeState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

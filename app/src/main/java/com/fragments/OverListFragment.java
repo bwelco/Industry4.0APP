@@ -1,5 +1,6 @@
 package com.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,12 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.Bean.OrderListBean;
 import com.adapter.OrderListAdapter;
 import com.bwelco.app.OrderListActivity;
+import com.bwelco.app.QueryActivity;
 import com.bwelco.app.R;
 import com.google.gson.reflect.TypeToken;
 import com.lidroid.xutils.exception.HttpException;
@@ -35,7 +38,7 @@ import Utils.ToastUtil;
 /**
  * Created by bwelco on 2016/8/15.
  */
-public class OverListFragment extends Fragment {
+public class OverListFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     private static SwipeRefreshLayout refresh;
     private static OrderListAdapter adapter;
@@ -55,6 +58,7 @@ public class OverListFragment extends Fragment {
 
         listView.setVerticalScrollBarEnabled(false);
         listView.setEmptyView(textView);
+        listView.setOnItemClickListener(this);
 
         adapter = new OrderListAdapter(getContext(),
                 R.layout.item_order_list, OrderListActivity.overList);
@@ -129,6 +133,19 @@ public class OverListFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                     }
                 });
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String orderID = OrderListActivity.overList.get(position).getOrderID();
+
+        Intent intent = new Intent(getActivity(), QueryActivity.class);
+        intent.putExtra("order", OrderListActivity.orderList);
+        intent.putExtra("id", OrderListActivity.overList.get(position).getOrderID());
+
+        startActivity(intent);
+
     }
 
 

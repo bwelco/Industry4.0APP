@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -69,6 +71,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     double longitude, latitude;
 
     boolean isLocated = false;
+    Myhandler myhandler;
 
     OrderBean bean;
 
@@ -77,8 +80,17 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
+        myhandler = new Myhandler();
+
         dialog = new ProgressDialog(this);
+        dialog.setMessage("正在连接中");
         dialog.show();
+
+        if (ConfigUtil.nickName.equals("-1")) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            this.finish();
+        }
 
         MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
                 ConfigUtil.URL + "Gy4-new-2/AppGetOrderXiadan.jsp", new RequestCallBack<String>() {
@@ -96,7 +108,12 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onFailure(HttpException e, String s) {
-                        dialog.dismiss();
+
+                        try {
+                            dialog.dismiss();
+                        } catch (Exception e1) {
+
+                        }
                         ToastUtil.toast("获取失败。请检查连接。ErrCode: " + s);
                     }
                 });
@@ -293,6 +310,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
                 dialog.setMessage("正在创建订单...");
                 dialog.show();
+
                 params.addBodyParameter("param", object.toString());
                 MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
                         ConfigUtil.URL + "Gy4-new-2/AppAddOrder.jsp", params, new RequestCallBack<String>() {
@@ -300,13 +318,21 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                             public void onSuccess(ResponseInfo<String> responseInfo) {
                                 Log.i("admin", responseInfo.result);
                                 /* 睡眠一会。等插入好之后再去调用。 */
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                ToastUtil.toast("下单成功！");
-                                dialog.dismiss();
+
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        myhandler.sendEmptyMessage(0);
+                                    }
+                                });
+
+                                 thread.run();
+
 
                                 Intent intent = new Intent(OrderActivity.this, OrderListActivity.class);
                                 startActivity(intent);
@@ -321,6 +347,16 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                             }
                         });
 
+            }
+        }
+    }
+
+    public class Myhandler extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0) {
+                ToastUtil.toast("下单成功！");
+                dialog.dismiss();
             }
         }
     }

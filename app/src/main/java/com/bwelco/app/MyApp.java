@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
 
+import Utils.ConfigUtil;
+
 /**
  * Created by bwelco on 2016/7/1.
  */
@@ -22,6 +24,7 @@ public class MyApp extends Application {
         ToastMgr.builder.init(getApplicationContext());
         context = getApplicationContext();
 
+        ConfigUtil.URL = ConfigUtil.getURL();
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
     }

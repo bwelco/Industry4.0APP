@@ -9,12 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import Utils.ConfigUtil;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     LinearLayout send;
     LinearLayout query;
-
 
 
     @Override
@@ -42,16 +43,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.send:{
-                Intent intent = new Intent(MainActivity.this, OrderActivity.class);
-                startActivity(intent);
+        switch (v.getId()) {
+            case R.id.send: {
+                if (ConfigUtil.nickName.equals("-1")) {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                    this.finish();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, OrderActivity.class);
+                    startActivity(intent);
+                }
                 break;
             }
 
-            case R.id.query:{
-                Intent intent = new Intent(MainActivity.this, OrderListActivity.class);
-                startActivity(intent);
+            case R.id.query: {
+                if (ConfigUtil.nickName.equals("-1")) {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                    this.finish();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, OrderListActivity.class);
+                    startActivity(intent);
+                }
                 break;
             }
 

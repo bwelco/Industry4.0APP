@@ -1,9 +1,9 @@
 package com.bwelco.app;
 
 
-import android.app.ActivityOptions;
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -50,34 +50,44 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
 
+        setInfo();
     }
 
     @OnClick({R.id.bt_go, R.id.fab})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.fab:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setExitTransition(null);
-                    getWindow().setEnterTransition(null);
-                }
-
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ActivityOptions options =
-                            ActivityOptions.makeSceneTransitionAnimation(this, fab, fab.getTransitionName());
-                    startActivity(new Intent(this, RegisterActivity.class), options.toBundle());
-                } else {
-                    startActivity(new Intent(this, RegisterActivity.class));
-                }
-                break;
+//            case R.id.fab:
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    getWindow().setExitTransition(null);
+//                    getWindow().setEnterTransition(null);
+//                }
+//
+//
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    ActivityOptions options =
+//                            ActivityOptions.makeSceneTransitionAnimation(this, fab, fab.getTransitionName());
+//                    startActivity(new Intent(this, RegisterActivity.class), options.toBundle());
+//                } else {
+//                    startActivity(new Intent(this, RegisterActivity.class));
+//                }
+//                break;
             case R.id.bt_go:
                 final Explode[] explode = {null};
 
                 RequestParams params = new RequestParams();
                 //params.setBodyEntity(b);
-                params.addBodyParameter("request",
-                        "{\"UserName\":\"18115162181\",\"Password\":\"181\"}");
 
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("UserName", etUsername.getText().toString());
+                    object.put("Password", etPassword.getText().toString());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                params.addBodyParameter("request", object.toString());
+                Log.i("admin", ConfigUtil.getURL());
 
                 MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
                         ConfigUtil.URL + "Gy4-new-2/AppCheckUser.jsp", params,
@@ -96,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                                         ToastUtil.toast("登录失败！请检查用户名密码");
                                     } else {
                                         ToastUtil.toast("登录成功！");
+                                        saveUserInfo();
                                         ConfigUtil.userID = userID;
                                         ConfigUtil.nickName = nickName;
 
@@ -111,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 ActivityOptionsCompat.makeSceneTransitionAnimation(LoginActivity.this);
                                         Intent i2 = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(i2, oc2.toBundle());
+                                        LoginActivity.this.finish();
                                     }
 
                                 } catch (JSONException e) {
@@ -125,5 +137,24 @@ public class LoginActivity extends AppCompatActivity {
                         });
                 break;
         }
+    }
+
+    public void saveUserInfo(){
+        SharedPreferences sp = getSharedPreferences("userinfo",Activity.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sp.edit();
+
+        editor.putString("username", etUsername.getText().toString());
+        editor.putString("password", etPassword.getText().toString());
+
+        editor.commit();
+    }
+
+    public void setInfo(){
+        SharedPreferences sp = getSharedPreferences("userinfo",Activity.MODE_PRIVATE);
+
+        etUsername.setText(sp.getString("username", null));
+        etPassword.setText(sp.getString("password", null));
+
     }
 }

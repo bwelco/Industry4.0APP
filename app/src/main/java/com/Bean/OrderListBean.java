@@ -1,11 +1,12 @@
 package com.Bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by bwelco on 2016/8/15.
  */
-public class OrderListBean  {
+public class OrderListBean implements Serializable {
 
 
     /**
@@ -31,7 +32,7 @@ public class OrderListBean  {
         this.OrderInfo = OrderInfo;
     }
 
-    public static class OrderInfoBean {
+    public static class OrderInfoBean implements Serializable {
         private String OrderID;
         private String OrderStateCode;
         private String OrderState;
