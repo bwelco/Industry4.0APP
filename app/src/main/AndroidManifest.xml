@@ -63,7 +63,9 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="y9TjzWX6YCW5qy2C0z53Pp1TaErojVlV" />
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -78,26 +80,34 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".MapActivity" />
+        <activity
+            android:name=".MapActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".BNDemoMainActivity"
-            android:configChanges="orientation|screenSize|keyboard|keyboardHidden" />
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".BNDemoGuideActivity"
-            android:configChanges="orientation|screenSize|keyboard|keyboardHidden" />
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RoutePlanActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Dialog" />
         <activity
             android:name=".LoginActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity
             android:name=".RegisterActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <activity android:name=".SettingActivity" />
         <activity
             android:name=".OrderListActivity"
             android:label="订单查询"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
