@@ -11,7 +11,6 @@
     <JAVADOC />
     <SOURCES>
       <root url="jar://C:/AndroidSDK/sdk/extras/android/m2repository/com/android/support/support-v4/23.4.0/support-v4-23.4.0-sources.jar!/" />
-      <root url="jar://C:/FeatherTools/Android/sdk/extras/android/m2repository/com/android/support/support-v4/23.4.0/support-v4-23.4.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

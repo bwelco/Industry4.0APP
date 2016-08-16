@@ -86,12 +86,6 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         dialog.setMessage("正在连接中");
         dialog.show();
 
-        if (ConfigUtil.nickName.equals("-1")) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            this.finish();
-        }
-
         MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
                 ConfigUtil.URL + "Gy4-new-2/AppGetOrderXiadan.jsp", new RequestCallBack<String>() {
                     @Override

@@ -1,20 +1,19 @@
-package com.bwelco.app;
-
+package com.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.transition.Explode;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.bwelco.app.R;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.RequestParams;
 import com.lidroid.xutils.http.ResponseInfo;
@@ -31,7 +30,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity {
+/**
+ * Created by bwelco on 2016/8/16.
+ */
+public class LoginFragment extends DialogFragment {
+
 
     @InjectView(R.id.et_username)
     EditText etUsername;
@@ -39,38 +42,27 @@ public class LoginActivity extends AppCompatActivity {
     EditText etPassword;
     @InjectView(R.id.bt_go)
     Button btGo;
-    @InjectView(R.id.cv)
-    CardView cv;
-    @InjectView(R.id.fab)
-    FloatingActionButton fab;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        ButterKnife.inject(this);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_login, null);
 
-        setInfo();
+
+        ButterKnife.inject(this, view);
+        return view;
     }
 
-    @OnClick({R.id.bt_go, R.id.fab})
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
+
+    @OnClick(R.id.bt_go)
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.fab:
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    getWindow().setExitTransition(null);
-//                    getWindow().setEnterTransition(null);
-//                }
-//
-//
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    ActivityOptions options =
-//                            ActivityOptions.makeSceneTransitionAnimation(this, fab, fab.getTransitionName());
-//                    startActivity(new Intent(this, RegisterActivity.class), options.toBundle());
-//                } else {
-//                    startActivity(new Intent(this, RegisterActivity.class));
-//                }
-//                break;
+
             case R.id.bt_go:
                 final Explode[] explode = {null};
 
@@ -110,19 +102,20 @@ public class LoginActivity extends AppCompatActivity {
                                         ConfigUtil.userID = userID;
                                         ConfigUtil.nickName = nickName;
 
-                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                                            explode[0] = new Explode();
-                                            explode[0].setDuration(500);
-
-                                            getWindow().setExitTransition(explode[0]);
-                                            getWindow().setEnterTransition(explode[0]);
-                                        }
-
-                                        ActivityOptionsCompat oc2 =
-                                                ActivityOptionsCompat.makeSceneTransitionAnimation(LoginActivity.this);
-                                        Intent i2 = new Intent(LoginActivity.this, MainActivity.class);
-                                        startActivity(i2, oc2.toBundle());
-                                        LoginActivity.this.finish();
+//                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+//                                            explode[0] = new Explode();
+//                                            explode[0].setDuration(500);
+//
+//                                            getActivity().getWindow().setExitTransition(explode[0]);
+//                                            getActivity().getWindow().setEnterTransition(explode[0]);
+//                                        }
+//
+//                                        ActivityOptionsCompat oc2 =
+//                                                ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity());
+//                                        Intent i2 = new Intent(getActivity(), MainActivity.class);
+//                                        startActivity(i2, oc2.toBundle());
+                                        LoginFragment.this.dismiss();
+                                       // LoginActivity.this.finish();
                                     }
 
                                 } catch (JSONException e) {
@@ -132,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(HttpException e, String s) {
-                                ToastUtil.toast("登录失败！请检查用户名密码" + " 错误码：" + s);
+                                ToastUtil.toast("登录失败！请检查网络连接。\n" + " ErrCode：" + s);
                             }
                         });
                 break;
@@ -140,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void saveUserInfo(){
-        SharedPreferences sp = getSharedPreferences("userinfo",Activity.MODE_PRIVATE);
+        SharedPreferences sp = getActivity().getSharedPreferences("userinfo", Activity.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sp.edit();
 
@@ -151,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void setInfo(){
-        SharedPreferences sp = getSharedPreferences("userinfo",Activity.MODE_PRIVATE);
+        SharedPreferences sp = getActivity().getSharedPreferences("userinfo",Activity.MODE_PRIVATE);
 
         etUsername.setText(sp.getString("username", null));
         etPassword.setText(sp.getString("password", null));

@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.fragments.LoginFragment;
+
 import Utils.ConfigUtil;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -46,9 +48,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.send: {
                 if (ConfigUtil.nickName.equals("-1")) {
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivity(intent);
-                    this.finish();
+
+                    LoginFragment fragment = new LoginFragment();
+                    fragment.show(getSupportFragmentManager(), null);
+
                 } else {
                     Intent intent = new Intent(MainActivity.this, OrderActivity.class);
                     startActivity(intent);
@@ -58,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.query: {
                 if (ConfigUtil.nickName.equals("-1")) {
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivity(intent);
-                    this.finish();
+
+                    LoginFragment fragment = new LoginFragment();
+                    fragment.show(getSupportFragmentManager(), null);
                 } else {
                     Intent intent = new Intent(MainActivity.this, OrderListActivity.class);
                     startActivity(intent);
@@ -89,8 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.login:
-                Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent1);
+                LoginFragment fragment = new LoginFragment();
+                fragment.show(getSupportFragmentManager(), null);
 
             default:
                 break;
