@@ -22,7 +22,6 @@ import android.widget.TextView;
 import com.Bean.OrderBean;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.RequestParams;
@@ -41,7 +40,6 @@ import Utils.GsonUtil;
 import Utils.MyHttpUtil;
 import Utils.ToastUtil;
 import comity.bawujw.citytest.View.CityPop;
-import model.OrderModel;
 
 public class OrderActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -183,92 +181,6 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                     return;
                 }
 
-//                if (city.getText().toString().equals("")) {
-//                    ToastUtil.toast("没有选择城市！");
-//                    return;
-//                }
-//                if (address.getText().toString().equals("")) {
-//                    address.setError("没有输入详细地址！");
-//                    address.requestFocus();
-//                    return;
-//                }
-
-                OrderModel order = new OrderModel();
-                order.setName(name.getText().toString());
-                order.setPhone(number.getText().toString());
-                //order.setAddress(city.getText().toString().replace("-", "") + address.getText().toString());
-                order.setGoods_type(goodType.getText().toString().substring(6));
-                order.setGoods_num(goodnum.getText().toString());
-                Gson gson = new Gson();
-                String jsonstr = gson.toJson(order);
-                Log.i("OrderActivity", jsonstr);
-
-
-                Intent intent = new Intent();
-
-                intent.setClass(OrderActivity.this, RoutePlanActivity.class);
-                Bundle bundle = new Bundle();
-
-                //城市和地址
-                bundle.putBoolean("location", isLocated);//是经纬度还是城市名
-
-                cityStr = stopLocation.getText().toString().substring(4);
-                bundle.putString("city", cityStr);
-                bundle.putString("address", addressStr);
-
-                bundle.putDouble("longitude", longitude);
-                bundle.putDouble("latitude", latitude);
-
-                intent.putExtras(bundle);
-
-                //拥有返回值
-                startActivityForResult(intent, 1);
-            }
-        });
-
-        contact.setOnClickListener(this);
-//        getLocation.setOnClickListener(this);
-//        getAddress.setOnClickListener(this);
-//        city.setOnClickListener(this);
-        goodType.setOnClickListener(this);
-        stopLocation.setOnClickListener(this);
-
-        name.setText(ConfigUtil.nickName);
-        number.setText(ConfigUtil.phoneNum);
-
-       // getAddress.setVisibility(View.GONE);
-
-     //   mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
-       // myListener = new MyLocationListener();
-      //  initLocation();
-      //  mLocationClient.registerLocationListener(myListener);    //注册监听函数
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.i("1", "result:" + resultCode);
-        switch (requestCode) {
-
-            case 0: {
-                if (data == null || resultCode != -1) {
-                    if (resultCode == -1) {
-                        ToastUtil.toast("选取联系人失败");
-                    }
-                    return;  //没选择联系人
-                }
-
-                Uri uri = data.getData();
-                String[] contacts = getPhoneContacts(uri);
-                name.setText(contacts[0]);
-                number.setText(contacts[1].replace("-", ""));
-
-                break;
-            }
-
-            //从地图界面返回
-            case 1: {
-                //Toast.makeText(OrderActivity.this, "地图返回", Toast.LENGTH_SHORT).show();
                 RequestParams params = new RequestParams();
                 JSONObject object = new JSONObject();
                 try {
@@ -325,7 +237,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                                     }
                                 });
 
-                                 thread.run();
+                                thread.run();
 
 
                                 Intent intent = new Intent(OrderActivity.this, OrderListActivity.class);
@@ -340,6 +252,164 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                                 ToastUtil.toast("下单失败！请检查网络设置 errCode:" + s);
                             }
                         });
+
+//                if (city.getText().toString().equals("")) {
+//                    ToastUtil.toast("没有选择城市！");
+//                    return;
+//                }
+//                if (address.getText().toString().equals("")) {
+//                    address.setError("没有输入详细地址！");
+//                    address.requestFocus();
+//                    return;
+//                }
+
+//                OrderModel order = new OrderModel();
+//                order.setName(name.getText().toString());
+//                order.setPhone(number.getText().toString());
+//                //order.setAddress(city.getText().toString().replace("-", "") + address.getText().toString());
+//                order.setGoods_type(goodType.getText().toString().substring(6));
+//                order.setGoods_num(goodnum.getText().toString());
+//                Gson gson = new Gson();
+//                String jsonstr = gson.toJson(order);
+//                Log.i("OrderActivity", jsonstr);
+
+//
+//                Intent intent = new Intent();
+//
+//                intent.setClass(OrderActivity.this, RoutePlanActivity.class);
+//                Bundle bundle = new Bundle();
+//
+//                //城市和地址
+//                bundle.putBoolean("location", isLocated);//是经纬度还是城市名
+//
+//                cityStr = stopLocation.getText().toString().substring(4);
+//                bundle.putString("city", cityStr);
+//                bundle.putString("address", addressStr);
+//
+//                bundle.putDouble("longitude", longitude);
+//                bundle.putDouble("latitude", latitude);
+//
+//                intent.putExtras(bundle);
+//
+//                //拥有返回值
+//                startActivityForResult(intent, 1);
+            }
+        });
+
+        contact.setOnClickListener(this);
+//        getLocation.setOnClickListener(this);
+//        getAddress.setOnClickListener(this);
+//        city.setOnClickListener(this);
+        goodType.setOnClickListener(this);
+        stopLocation.setOnClickListener(this);
+
+        name.setText(ConfigUtil.nickName);
+        number.setText(ConfigUtil.phoneNum);
+
+       // getAddress.setVisibility(View.GONE);
+
+     //   mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
+       // myListener = new MyLocationListener();
+      //  initLocation();
+      //  mLocationClient.registerLocationListener(myListener);    //注册监听函数
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i("1", "result:" + resultCode);
+        switch (requestCode) {
+
+            case 0: {
+                if (data == null || resultCode != -1) {
+                    if (resultCode == -1) {
+                        ToastUtil.toast("选取联系人失败");
+                    }
+                    return;  //没选择联系人
+                }
+
+                Uri uri = data.getData();
+                String[] contacts = getPhoneContacts(uri);
+                name.setText(contacts[0]);
+                number.setText(contacts[1].replace("-", ""));
+
+                break;
+            }
+
+            //从地图界面返回
+            case 1: {
+                //Toast.makeText(OrderActivity.this, "地图返回", Toast.LENGTH_SHORT).show();
+//                RequestParams params = new RequestParams();
+//                JSONObject object = new JSONObject();
+//                try {
+//
+//                    String selectProductID = null;
+//                    for (OrderBean.ProductClassBean b : bean.getProductClass()) {
+//                        Log.i("admin", goodType.getText().toString().substring("货物类型：".length()));
+//                        if (b.getProductClass().equals(goodType.getText().toString().substring("货物类型：".length()))) {
+//                            selectProductID = b.getID();
+//                            break;
+//                        }
+//                    }
+//
+//
+//                    String selectLocationID = null;
+//                    for (OrderBean.LocationBean b : bean.getLocation()) {
+//                        Log.i("admin", stopLocation.getText().toString().substring("收货地：".length()));
+//                        if (b.getLocation().equals(stopLocation.getText().toString().substring("收货地：".length()))) {
+//                            selectLocationID = b.getID();
+//                            break;
+//                        }
+//                    }
+//
+//                    object.put("UserID", ConfigUtil.userID);
+//                    object.put("Description", beizhu.getText().toString() + "");
+//                    object.put("ProductNumber", goodnum.getText().toString());
+//                    object.put("ProductClass", selectProductID);
+//                    object.put("Location", selectLocationID);
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                dialog.setMessage("正在创建订单...");
+//                dialog.show();
+//
+//                params.addBodyParameter("param", object.toString());
+//                MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
+//                        ConfigUtil.URL + "Gy4-new-2/AppAddOrder.jsp", params, new RequestCallBack<String>() {
+//                            @Override
+//                            public void onSuccess(ResponseInfo<String> responseInfo) {
+//                                Log.i("admin", responseInfo.result);
+//                                /* 睡眠一会。等插入好之后再去调用。 */
+//
+//                                Thread thread = new Thread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        try {
+//                                            Thread.sleep(1000);
+//                                        } catch (InterruptedException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                        myhandler.sendEmptyMessage(0);
+//                                    }
+//                                });
+//
+//                                 thread.run();
+//
+//
+//                                Intent intent = new Intent(OrderActivity.this, OrderListActivity.class);
+//                                startActivity(intent);
+//                                OrderActivity.this.finish();
+//                            }
+//
+//                            @Override
+//                            public void onFailure(HttpException e, String s) {
+//                                Log.i("admin","fail = " + s);
+//                                dialog.dismiss();
+//                                ToastUtil.toast("下单失败！请检查网络设置 errCode:" + s);
+//                            }
+//                        });
 
             }
         }
