@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.baidu.mapapi.SDKInitializer;
 
 import Utils.ConfigUtil;
+import Utils.CrashHandler;
 
 /**
  * Created by bwelco on 2016/7/1.
@@ -23,6 +24,7 @@ public class MyApp extends Application {
         super.onCreate();
         ToastMgr.builder.init(getApplicationContext());
         context = getApplicationContext();
+        CrashHandler.getInstance().init(this);
 
         ConfigUtil.URL = ConfigUtil.getURL();
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext

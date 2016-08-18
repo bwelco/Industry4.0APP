@@ -18,6 +18,8 @@ public class ConfigUtil {
 
     public static String nickName = "-1";
 
+    public final static String logDir = "njit/log";
+
     public static String getURL() {
         String ret = null;
         SharedPreferences sp =

@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         send.setOnClickListener(this);
         query.setOnClickListener(this);
-
     }
 
     @Override

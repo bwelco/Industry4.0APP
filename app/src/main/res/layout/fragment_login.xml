@@ -90,7 +90,7 @@
                 android:background="@drawable/bt_shape"
                 android:stateListAnimator="@drawable/state_list_animator_z"
                 android:text="登录"
-                android:textColor="#d3d3d3"></Button>
+                android:textColor="#a3a3a3"></Button>
         </RelativeLayout>
 
     </LinearLayout>
