@@ -120,7 +120,7 @@ public class QueryActivity extends AppCompatActivity implements ScrollViewListen
                         @Override
                         public void onFailure(HttpException e, String s) {
                             dialog.dismiss();
-                            ToastUtil.toast("请求失败。ErrCode：" + s);
+                            ToastUtil.toast("请求失败。请检查网络设置或者重新设置IP。");
                         }
                     });
         } else {
@@ -152,7 +152,7 @@ public class QueryActivity extends AppCompatActivity implements ScrollViewListen
                         @Override
                         public void onFailure(HttpException e, String s) {
                             dialog.dismiss();
-                            ToastUtil.toast("请求失败。ErrCode：" + s);
+                            ToastUtil.toast("请求失败。请检查网络设置或者重新设置IP。");
                         }
                     });
         }

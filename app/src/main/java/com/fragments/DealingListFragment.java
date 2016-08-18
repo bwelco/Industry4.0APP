@@ -129,7 +129,7 @@ public class DealingListFragment extends Fragment implements AdapterView.OnItemC
                         if (refresh.isRefreshing()) {
                             refresh.setRefreshing(false);
                         }
-                        ToastUtil.toast("请求失败。errCode：" + s);
+                        ToastUtil.toast("请求失败。请检查网络设置或者重新设置IP。");
                         adapter.notifyDataSetChanged();
                     }
                 });
@@ -147,4 +147,5 @@ public class DealingListFragment extends Fragment implements AdapterView.OnItemC
         startActivity(intent);
 
     }
+
 }

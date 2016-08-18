@@ -125,7 +125,7 @@ public class LoginFragment extends DialogFragment {
 
                             @Override
                             public void onFailure(HttpException e, String s) {
-                                ToastUtil.toast("登录失败！请检查网络连接。\n" + " ErrCode：" + s);
+                                ToastUtil.toast("登录失败！请检查网络连接。\n" + "请检查网络设置或者重新设置IP。");
                             }
                         });
                 break;

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">APP</string>
+    <string name="app_name">三菱电机-智能制造(工业4.0)</string>
 
     <!-- 驾车路线策略 -->
     <string-array name="driving_spinner">

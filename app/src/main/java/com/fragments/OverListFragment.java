@@ -129,7 +129,7 @@ public class OverListFragment extends Fragment implements AdapterView.OnItemClic
                         if (refresh.isRefreshing()) {
                             refresh.setRefreshing(false);
                         }
-                        ToastUtil.toast("请求失败。errCode：" + s);
+                        ToastUtil.toast("请求失败。请检查网络设置或者重新设置IP。");
                         adapter.notifyDataSetChanged();
                     }
                 });

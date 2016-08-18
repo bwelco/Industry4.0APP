@@ -126,7 +126,7 @@ public class OrderListActivity extends AppCompatActivity {
                     public void onFailure(HttpException e, String s) {
                         Log.i("admin", "failcode = " + s);
                         dialog.dismiss();
-                        ToastUtil.toast("请求失败。errCode：" + s);
+                        ToastUtil.toast("请求失败。请检查网络设置或者重新设置IP。");
                     }
                 });
 
@@ -150,8 +150,12 @@ public class OrderListActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0) {
+                ToastUtil.toast("刷新");
+                dealingListFragment.refreshList();
                 return dealingListFragment;
             } else if (position == 1) {
+                ToastUtil.toast("刷新");
+                overListFragment.refreshList();
                 return overListFragment;
             }
 

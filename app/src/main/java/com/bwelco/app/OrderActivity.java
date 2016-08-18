@@ -106,7 +106,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                         } catch (Exception e1) {
 
                         }
-                        ToastUtil.toast("获取失败。请检查连接。ErrCode: " + s);
+                        ToastUtil.toast("获取失败。请检查网络设置或者重新设置IP。");
                     }
                 });
 
@@ -249,7 +249,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                             public void onFailure(HttpException e, String s) {
                                 Log.i("admin","fail = " + s);
                                 dialog.dismiss();
-                                ToastUtil.toast("下单失败！请检查网络设置 errCode:" + s);
+                                ToastUtil.toast("下单失败！请检查网络设置或者重新设置IP。");
                             }
                         });
 
