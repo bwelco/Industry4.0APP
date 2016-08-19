@@ -12,7 +12,7 @@ public class ConfigUtil {
 
     public static String URL = "http://10.0.46.222:8080/";
 
-    public static String phoneNum = "18115162181";
+    public static String phoneNum = "13612345678";
 
     public static String userID = "3";
 

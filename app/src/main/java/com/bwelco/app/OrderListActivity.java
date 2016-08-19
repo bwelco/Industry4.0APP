@@ -86,7 +86,7 @@ public class OrderListActivity extends AppCompatActivity {
 
         params.addBodyParameter("userid", object.toString());
         MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
-                ConfigUtil.URL + "Gy4-new-2/AppGetAllOrderInfo.jsp", params, new RequestCallBack<String>() {
+                ConfigUtil.URL + "gy4/AppGetAllOrderInfo.jsp", params, new RequestCallBack<String>() {
                     @Override
                     public void onSuccess(ResponseInfo<String> responseInfo) {
                         dialog.dismiss();
@@ -116,6 +116,7 @@ public class OrderListActivity extends AppCompatActivity {
                         // Set up the ViewPager with the sections adapter.
                         mViewPager = (ViewPager) findViewById(R.id.container);
                         mViewPager.setAdapter(mSectionsPagerAdapter);
+                        mViewPager.addOnPageChangeListener(listener);
 
                         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
                         tabLayout.setupWithViewPager(mViewPager);
@@ -133,7 +134,26 @@ public class OrderListActivity extends AppCompatActivity {
     }
 
 
+    ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            if (position == 0) {
+                dealingListFragment.refreshList();
+            } else if (position == 1) {
+                overListFragment.refreshList();
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -150,12 +170,9 @@ public class OrderListActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0) {
-                ToastUtil.toast("刷新");
-                dealingListFragment.refreshList();
                 return dealingListFragment;
             } else if (position == 1) {
-                ToastUtil.toast("刷新");
-                overListFragment.refreshList();
+
                 return overListFragment;
             }
 

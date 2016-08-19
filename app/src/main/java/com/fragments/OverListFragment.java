@@ -88,7 +88,7 @@ public class OverListFragment extends Fragment implements AdapterView.OnItemClic
 
         params.addBodyParameter("userid", object.toString());
         MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
-                ConfigUtil.URL + "Gy4-new-2/AppGetAllOrderInfo.jsp", params, new RequestCallBack<String>() {
+                ConfigUtil.URL + "gy4/AppGetAllOrderInfo.jsp", params, new RequestCallBack<String>() {
                     @Override
                     public void onSuccess(ResponseInfo<String> responseInfo) {
 

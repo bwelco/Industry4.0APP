@@ -102,7 +102,7 @@ public class QueryActivity extends AppCompatActivity implements ScrollViewListen
             params.addBodyParameter("params", object.toString());
 
             MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
-                    ConfigUtil.URL + "Gy4-new-2/AppGetRunningOrderInfo.jsp", params, new RequestCallBack<String>() {
+                    ConfigUtil.URL + "gy4/AppGetRunningOrderInfo.jsp", params, new RequestCallBack<String>() {
                         @Override
                         public void onSuccess(ResponseInfo<String> responseInfo) {
                             dialog.dismiss();
@@ -135,7 +135,7 @@ public class QueryActivity extends AppCompatActivity implements ScrollViewListen
             params.addBodyParameter("params", object.toString());
 
             MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
-                    ConfigUtil.URL + "Gy4-new-2/AppGetFinishOrderInfo.jsp", params, new RequestCallBack<String>() {
+                    ConfigUtil.URL + "gy4/AppGetFinishOrderInfo.jsp", params, new RequestCallBack<String>() {
                         @Override
                         public void onSuccess(ResponseInfo<String> responseInfo) {
                             dialog.dismiss();

@@ -82,7 +82,7 @@ public class LoginFragment extends DialogFragment {
                 Log.i("admin", ConfigUtil.getURL());
 
                 MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
-                        ConfigUtil.URL + "Gy4-new-2/AppCheckUser.jsp", params,
+                        ConfigUtil.URL + "gy4/AppCheckUser.jsp", params,
                         new RequestCallBack<String>() {
                             @Override
                             public void onSuccess(ResponseInfo<String> responseInfo) {

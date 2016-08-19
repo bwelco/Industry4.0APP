@@ -85,7 +85,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         dialog.show();
 
         MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
-                ConfigUtil.URL + "Gy4-new-2/AppGetOrderXiadan.jsp", new RequestCallBack<String>() {
+                ConfigUtil.URL + "gy4/AppGetOrderXiadan.jsp", new RequestCallBack<String>() {
                     @Override
                     public void onSuccess(ResponseInfo<String> responseInfo) {
                         dialog.dismiss();
@@ -219,7 +219,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
                 params.addBodyParameter("param", object.toString());
                 MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
-                        ConfigUtil.URL + "Gy4-new-2/AppAddOrder.jsp", params, new RequestCallBack<String>() {
+                        ConfigUtil.URL + "gy4/AppAddOrder.jsp", params, new RequestCallBack<String>() {
                             @Override
                             public void onSuccess(ResponseInfo<String> responseInfo) {
                                 Log.i("admin", responseInfo.result);
@@ -377,7 +377,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 //
 //                params.addBodyParameter("param", object.toString());
 //                MyHttpUtil.getInstance().send(HttpRequest.HttpMethod.GET,
-//                        ConfigUtil.URL + "Gy4-new-2/AppAddOrder.jsp", params, new RequestCallBack<String>() {
+//                        ConfigUtil.URL + "gy4/AppAddOrder.jsp", params, new RequestCallBack<String>() {
 //                            @Override
 //                            public void onSuccess(ResponseInfo<String> responseInfo) {
 //                                Log.i("admin", responseInfo.result);
